@@ -1,5 +1,3 @@
-import '@fontsource/inter';
-import '@fontsource/clash-display';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
