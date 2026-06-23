@@ -26,60 +26,70 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900 transition-colors">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-md w-full max-w-sm transition-colors"
-      >
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-slate-100">
-          CodeZaro Login
-        </h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 transition-colors">
+      <div className="w-full max-w-md p-8">
+        <div className="glass p-8 rounded-3xl shadow-2xl border border-white/20 dark:border-slate-800/50">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-display font-bold bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-transparent">
+              Welcome Back
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
+              Log in to continue reviewing code
+            </p>
+          </div>
 
-        {error && (
-          <p className="text-red-500 dark:text-red-400 text-sm mb-4 text-center">
-            {error}
+          {error && (
+            <div className="bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400 text-sm p-3 rounded-xl mb-4 border border-red-200 dark:border-red-800/30">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition dark:text-white placeholder:text-slate-400"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-3 bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition dark:text-white placeholder:text-slate-400"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/20 hover:shadow-indigo-600/30 disabled:opacity-50"
+            >
+              {loading ? "Logging in..." : "Log In"}
+            </button>
+          </form>
+
+          <p className="mt-6 text-sm text-center text-slate-500 dark:text-slate-400">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+              Sign up
+            </Link>
           </p>
-        )}
-
-        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
-          Email
-        </label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="you@example.com"
-        />
-
-        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
-          Password
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="••••••••"
-        />
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
-        >
-          {loading ? "Logging in..." : "Log In"}
-        </button>
-
-        <p className="mt-4 text-sm text-center text-gray-600 dark:text-slate-400">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600 dark:text-blue-400 hover:underline">
-            Sign up
-          </Link>
-        </p>
-      </form>
+        </div>
+      </div>
     </div>
   );
 }
