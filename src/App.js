@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./ThemeContext";
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Review from "./pages/Review";
@@ -34,6 +35,7 @@ function App() {
             }
           />
           <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Landing />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
