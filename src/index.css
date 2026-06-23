@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
-@import '@fontsource/clash-display';
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Outfit:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +6,7 @@
 
 :root {
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Clash Display', sans-serif;
+  --font-display: 'Outfit', sans-serif;
 }
 
 @layer base {
