@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { submitReview, getUsage } from "../api";
 import { useTheme } from "../ThemeContext";
+import axios from "axios"; // <-- added
 
 function Review() {
   const [code, setCode] = useState("");
@@ -12,6 +13,9 @@ function Review() {
   const [usage, setUsage] = useState(null);
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
+
+  // You can replace this with the actual backend URL if needed
+  const API_BASE_URL = "https://codezaro-backend-7.onrender.com";
 
   const fetchUsage = async () => {
     try {
@@ -57,6 +61,21 @@ function Review() {
     }
   };
 
+  const handleUpgrade = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.post(
+        `${API_BASE_URL}/payments/create-checkout`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      window.location.href = response.data.url;
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong. Please try again.");
+    }
+  };
+
   const usagePercent = usage ? (usage.review_count / usage.limit) * 100 : 0;
   const showUsageWarning = usage && usagePercent >= 90;
   const limitReached = usage && usage.review_count >= usage.limit;
@@ -81,6 +100,12 @@ function Review() {
               className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
               History
+            </button>
+            <button
+              onClick={handleUpgrade}
+              className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+            >
+              Upgrade to Pro
             </button>
             <button
               onClick={handleLogout}
