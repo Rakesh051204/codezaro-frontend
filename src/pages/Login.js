@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // added Link
+import { useNavigate, Link } from "react-router-dom";
 import { login } from "../api";
 
 function Login() {
@@ -26,20 +26,22 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900 transition-colors">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm"
+        className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-md w-full max-w-sm transition-colors"
       >
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-slate-100">
           CodeZaro Login
         </h1>
 
         {error && (
-          <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+          <p className="text-red-500 dark:text-red-400 text-sm mb-4 text-center">
+            {error}
+          </p>
         )}
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
           Email
         </label>
         <input
@@ -47,11 +49,11 @@ function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="you@example.com"
         />
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
           Password
         </label>
         <input
@@ -59,7 +61,7 @@ function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="••••••••"
         />
 
@@ -71,10 +73,9 @@ function Login() {
           {loading ? "Logging in..." : "Log In"}
         </button>
 
-        {/* Sign up link */}
-        <p className="mt-4 text-sm text-center text-gray-600">
+        <p className="mt-4 text-sm text-center text-gray-600 dark:text-slate-400">
           Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-blue-600 dark:text-blue-400 hover:underline">
             Sign up
           </Link>
         </p>

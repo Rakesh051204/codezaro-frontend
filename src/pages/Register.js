@@ -14,16 +14,13 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
     setLoading(true);
     try {
       await register(email, password, fullName);
-      // After successful registration, redirect to login
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.detail || "Registration failed. Please try again.");
@@ -33,20 +30,22 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-slate-900 transition-colors">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm"
+        className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-md w-full max-w-sm transition-colors"
       >
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-slate-100">
           Create Account
         </h1>
 
         {error && (
-          <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+          <p className="text-red-500 dark:text-red-400 text-sm mb-4 text-center">
+            {error}
+          </p>
         )}
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
           Full Name
         </label>
         <input
@@ -54,11 +53,11 @@ function Register() {
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="John Doe"
         />
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
           Email
         </label>
         <input
@@ -66,11 +65,11 @@ function Register() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="you@example.com"
         />
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
           Password
         </label>
         <input
@@ -78,11 +77,11 @@ function Register() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="••••••••"
         />
 
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
           Confirm Password
         </label>
         <input
@@ -90,7 +89,7 @@ function Register() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="••••••••"
         />
 
@@ -102,9 +101,9 @@ function Register() {
           {loading ? "Creating account..." : "Sign Up"}
         </button>
 
-        <p className="mt-4 text-sm text-center text-gray-600">
+        <p className="mt-4 text-sm text-center text-gray-600 dark:text-slate-400">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:underline">
             Log in
           </Link>
         </p>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getHistory } from "../api";
 
 function History() {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -22,64 +22,100 @@ function History() {
     fetchHistory();
   }, []);
 
+  const toggleExpand = (id) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
+
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString();
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-6 transition-colors">
+      <div className="max-w-3xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Review History</h1>
-          <button
-            onClick={() => navigate("/review")}
-            className="text-sm text-blue-600 hover:underline"
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100">
+            Review History
+          </h1>
+          <Link
+            to="/review"
+            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
           >
             ← Back to Review
-          </button>
+          </Link>
         </div>
 
+        {loading && (
+          <p className="text-gray-500 dark:text-slate-400 text-center">
+            Loading history...
+          </p>
+        )}
+
         {error && (
-          <div className="bg-red-50 border border-red-300 text-red-700 p-4 rounded-lg mb-4">
+          <p className="text-red-500 dark:text-red-400 text-center mb-4">
             {error}
+          </p>
+        )}
+
+        {!loading && !error && reviews.length === 0 && (
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md text-center text-gray-500 dark:text-slate-400 transition-colors">
+            No reviews yet.{" "}
+            <Link to="/review" className="text-blue-600 dark:text-blue-400 hover:underline">
+              Submit your first one
+            </Link>
+            .
           </div>
         )}
 
-        {loading ? (
-          <div className="text-center text-gray-500">Loading history...</div>
-        ) : reviews.length === 0 ? (
-          <div className="text-center text-gray-500 bg-white p-8 rounded-lg shadow">
-            No reviews yet. Submit some code to get started!
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {reviews.map((review) => (
-              <div key={review.id} className="bg-white p-4 rounded-lg shadow">
-                <div className="flex justify-between items-start mb-2">
-                  <span className="text-sm font-medium text-gray-600">
-                    Language: {review.language || "unknown"}
+        <div className="space-y-3">
+          {reviews.map((review) => (
+            <div
+              key={review.id}
+              className="bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition-colors"
+            >
+              <button
+                onClick={() => toggleExpand(review.id)}
+                className="w-full text-left p-4 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-slate-700 transition"
+              >
+                <div>
+                  <span className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-medium px-2 py-1 rounded mr-2">
+                    {review.language || "unknown"}
                   </span>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-sm text-gray-500 dark:text-slate-400">
                     {formatDate(review.created_at)}
                   </span>
                 </div>
-                <pre className="bg-gray-50 p-2 rounded text-sm overflow-x-auto mb-2">
-                  {review.code.length > 200
-                    ? review.code.slice(0, 200) + "..."
-                    : review.code}
-                </pre>
-                <div className="text-sm text-gray-700">
-                  {review.review_result.length > 300
-                    ? review.review_result.slice(0, 300) + "..."
-                    : review.review_result}
+                <span className="text-gray-400 dark:text-slate-500 text-sm">
+                  {expandedId === review.id ? "▲ Hide" : "▼ View"}
+                </span>
+              </button>
+
+              {expandedId === review.id && (
+                <div className="border-t border-gray-200 dark:border-slate-700 p-4 bg-gray-50 dark:bg-slate-900">
+                  <p className="text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1">
+                    CODE
+                  </p>
+                  <pre className="bg-gray-900 dark:bg-black text-green-400 text-xs p-3 rounded mb-3 overflow-x-auto">
+                    {review.code}
+                  </pre>
+                  <p className="text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1">
+                    REVIEW
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-slate-300 whitespace-pre-wrap">
+                    {review.review_result}
+                  </p>
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
-                  Model: {review.model_used}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
