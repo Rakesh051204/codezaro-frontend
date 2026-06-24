@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./ThemeContext";
-import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Review from "./pages/Review";
 import History from "./pages/History";
+import Landing from "./pages/Landing";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("access_token");
@@ -16,6 +16,7 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
@@ -34,8 +35,6 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/" element={<Landing />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

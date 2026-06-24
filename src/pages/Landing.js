@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 function Landing() {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors">
-      {/* Premium Navbar */}
       <nav className="flex justify-between items-center max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-lg" />
@@ -22,7 +21,6 @@ function Landing() {
         </div>
       </nav>
 
-      {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-6 pt-20 pb-32 text-center">
         <div className="inline-block px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 text-xs font-semibold border border-indigo-100 dark:border-indigo-800/50 mb-6">
           ⚡ AI-Powered Code Reviews
@@ -48,7 +46,6 @@ function Landing() {
             Log in →
           </Link>
         </div>
-        {/* Floating demo snippet - aesthetic */}
         <div className="mt-16 max-w-3xl mx-auto bg-slate-900 dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-800/50 p-6 text-left font-mono text-sm text-slate-300">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-3 h-3 bg-red-500 rounded-full" />
@@ -70,7 +67,6 @@ function Landing() {
         </div>
       </section>
 
-      {/* Feature Cards */}
       <section className="max-w-7xl mx-auto px-6 pb-20 grid md:grid-cols-3 gap-8">
         {[
           {
