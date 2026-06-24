@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Review from "./pages/Review";
 import History from "./pages/History";
 import Landing from "./pages/Landing";
+import Agent from "./pages/Agent";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("access_token");
@@ -32,6 +33,14 @@ function App() {
             element={
               <PrivateRoute>
                 <History />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/agent"
+            element={
+              <PrivateRoute>
+                <Agent />
               </PrivateRoute>
             }
           />
