@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { submitReview, getUsage } from "../api";
 import { useTheme } from "../ThemeContext";
-import axios from "axios"; // <-- added
+import axios from "axios";
 
 function Review() {
   const [code, setCode] = useState("");
@@ -14,7 +14,6 @@ function Review() {
   const navigate = useNavigate();
   const { isDark, toggleTheme } = useTheme();
 
-  // You can replace this with the actual backend URL if needed
   const API_BASE_URL = "https://codezaro-backend-7.onrender.com";
 
   const fetchUsage = async () => {
@@ -102,6 +101,12 @@ function Review() {
               History
             </button>
             <button
+              onClick={() => navigate("/agent")}
+              className="text-sm text-indigo-400 hover:underline"
+            >
+              Agent
+            </button>
+            <button
               onClick={handleUpgrade}
               className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
             >
@@ -169,8 +174,23 @@ function Review() {
           >
             <option value="python">Python</option>
             <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
             <option value="java">Java</option>
+            <option value="c">C</option>
             <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+            <option value="ruby">Ruby</option>
+            <option value="php">PHP</option>
+            <option value="swift">Swift</option>
+            <option value="kotlin">Kotlin</option>
+            <option value="scala">Scala</option>
+            <option value="dart">Dart</option>
+            <option value="elixir">Elixir</option>
+            <option value="lua">Lua</option>
+            <option value="r">R</option>
+            <option value="perl">Perl</option>
           </select>
 
           <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
