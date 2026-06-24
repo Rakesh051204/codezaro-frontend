@@ -8,10 +8,27 @@ function Agent() {
   const [steps, setSteps] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [currentStep, setCurrentStep] = useState(null);
+  const [pendingAction, setPendingAction] = useState(null); // {action_id, tool, params}
   const navigate = useNavigate();
 
   const API_BASE_URL = "https://codezaro-backend-7.onrender.com"; // or localhost:8000
+
+  const handleApprove = async (approved) => {
+    if (!pendingAction) return;
+    try {
+      const token = localStorage.getItem("access_token");
+      await axios.post(
+        `${API_BASE_URL}/agent/approve`,
+        { action_id: pendingAction.action_id, approved },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // The SSE stream will continue and send the tool result or rejection event
+      setPendingAction(null);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to send approval decision.");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +36,7 @@ function Agent() {
     setLoading(true);
     setError("");
     setSteps([]);
-    setCurrentStep(null);
+    setPendingAction(null);
 
     try {
       const token = localStorage.getItem("access_token");
@@ -47,19 +64,34 @@ function Agent() {
               setLoading(false);
               break;
             }
-            if (data.decision) {
-              setSteps((prev) => [...prev, data.decision]);
-              setCurrentStep(data.decision);
-            }
-            if (data.tool_result) {
-              // Optionally append tool result to the last step
+            if (data.type === "action_proposed") {
+              // Show accept/reject buttons
+              setPendingAction({
+                action_id: data.action_id,
+                tool: data.tool,
+                params: data.params,
+              });
+            } else if (data.type === "tool_result") {
+              // Append result to last step or create a new step
               setSteps((prev) => {
                 const newSteps = [...prev];
                 if (newSteps.length > 0) {
-                  newSteps[newSteps.length - 1].result = data.tool_result;
+                  newSteps[newSteps.length - 1].result = data.result;
                 }
                 return newSteps;
               });
+            } else if (data.type === "action_rejected") {
+              // Optionally show rejection in steps
+              setSteps((prev) => {
+                const newSteps = [...prev];
+                if (newSteps.length > 0) {
+                  newSteps[newSteps.length - 1].rejected = true;
+                }
+                return newSteps;
+              });
+            } else if (data.decision) {
+              // Normal step (thought/action)
+              setSteps((prev) => [...prev, data.decision]);
             }
           }
         }
@@ -68,6 +100,7 @@ function Agent() {
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
+      setPendingAction(null);
     }
   };
 
@@ -112,6 +145,38 @@ function Agent() {
           <div className="text-[#8b949e] text-sm animate-pulse">Agent is thinking...</div>
         )}
 
+        {/* Pending action approval card */}
+        {pendingAction && (
+          <div className="mt-4 bg-[#161b22] border border-[#f0883e] rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-[#f0883e] font-mono">⚠️</span>
+              <div className="flex-1">
+                <p className="text-[#e6edf3] text-sm font-semibold">Proposed Action</p>
+                <p className="text-[#8b949e] text-sm">
+                  <span className="text-[#f0883e]">Tool:</span> {pendingAction.tool}
+                </p>
+                <p className="text-[#8b949e] text-sm">
+                  <span className="text-[#f0883e]">Params:</span> {JSON.stringify(pendingAction.params)}
+                </p>
+                <div className="mt-3 flex gap-3">
+                  <button
+                    onClick={() => handleApprove(true)}
+                    className="px-4 py-2 bg-[#238636] hover:bg-[#2ea043] rounded-md text-sm font-medium transition"
+                  >
+                    ✅ Accept
+                  </button>
+                  <button
+                    onClick={() => handleApprove(false)}
+                    className="px-4 py-2 bg-[#f85149] hover:bg-[#da3633] rounded-md text-sm font-medium transition"
+                  >
+                    ❌ Reject
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {steps.length > 0 && (
           <div className="mt-4 space-y-3">
             <h2 className="text-lg font-semibold text-[#e6edf3]">Agent Steps</h2>
@@ -137,6 +202,9 @@ function Agent() {
                       <p className="text-[#3fb950] text-sm mt-1">
                         <span className="text-[#e6edf3]">Result:</span> {step.result}
                       </p>
+                    )}
+                    {step.rejected && (
+                      <p className="text-[#f85149] text-sm mt-1">⛔ Action rejected by user</p>
                     )}
                     {step.stop && (
                       <p className="text-[#3fb950] text-sm mt-1">✅ Task complete</p>
