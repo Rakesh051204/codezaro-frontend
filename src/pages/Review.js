@@ -20,20 +20,12 @@ function Review() {
     try {
       const data = await getUsage();
       setUsage(data);
-    } catch (err) {
-      // Silently ignore – usage display is non-critical
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {
     fetchUsage();
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    navigate("/login");
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,159 +72,117 @@ function Review() {
   const limitReached = usage && usage.review_count >= usage.limit;
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-slate-900 p-6 transition-colors">
-      <div className="max-w-3xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-slate-100">
-            CodeZaro Review
-          </h1>
-          <div className="space-x-4 flex items-center">
-            <button
-              onClick={toggleTheme}
-              className="text-sm text-gray-500 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
-              title="Toggle theme"
-            >
-              {isDark ? "☀️ Light" : "🌙 Dark"}
-            </button>
-            <button
-              onClick={() => navigate("/history")}
-              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              History
-            </button>
-            <button
-              onClick={() => navigate("/agent")}
-              className="text-sm text-indigo-400 hover:underline"
-            >
-              Agent
-            </button>
-            <button
-              onClick={handleUpgrade}
-              className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-            >
-              Upgrade to Pro
-            </button>
-            <button
-              onClick={handleLogout}
-              className="text-sm text-gray-500 dark:text-slate-300 hover:text-red-500"
-            >
-              Log out
-            </button>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-[#1F1F1F] p-6 transition-colors">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+          Code Review
+        </h1>
 
         {showUsageWarning && (
           <div
             className={`mb-4 p-4 rounded-lg border ${
               limitReached
-                ? "bg-red-50 dark:bg-red-950 border-red-300 dark:border-red-800"
-                : "bg-yellow-50 dark:bg-yellow-950 border-yellow-300 dark:border-yellow-800"
+                ? "border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-950/30"
+                : "border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950/30"
             }`}
           >
             <div className="flex justify-between items-center mb-2">
-              <span
-                className={`text-sm font-medium ${
-                  limitReached
-                    ? "text-red-700 dark:text-red-300"
-                    : "text-yellow-700 dark:text-yellow-300"
-                }`}
-              >
+              <span className="text-sm font-medium text-gray-800 dark:text-white">
                 {limitReached
                   ? "Monthly limit reached"
                   : "Approaching monthly limit"}
               </span>
-              <span className="text-xs text-gray-500 dark:text-slate-400 uppercase">
+              <span className="text-xs text-gray-500 dark:text-gray-400 uppercase">
                 {usage.tier} plan
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2 mb-2">
+            <div className="w-full h-2 bg-gray-200 dark:bg-[#3D3D3D] rounded-full">
               <div
-                className={`h-2 rounded-full ${
-                  limitReached ? "bg-red-500" : "bg-yellow-500"
-                }`}
+                className={`h-2 rounded-full ${limitReached ? "bg-red-500" : "bg-yellow-500"}`}
                 style={{ width: `${Math.min(usagePercent, 100)}%` }}
               />
             </div>
-            <p className="text-xs text-gray-600 dark:text-slate-400">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               {usage.review_count} / {usage.limit} reviews used this month
               {limitReached && " — upgrade to Pro for more reviews."}
             </p>
           </div>
         )}
 
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md mb-6 transition-colors"
-        >
-          <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
-            Language
-          </label>
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 rounded-md mb-4"
-          >
-            <option value="python">Python</option>
-            <option value="javascript">JavaScript</option>
-            <option value="typescript">TypeScript</option>
-            <option value="java">Java</option>
-            <option value="c">C</option>
-            <option value="cpp">C++</option>
-            <option value="csharp">C#</option>
-            <option value="go">Go</option>
-            <option value="rust">Rust</option>
-            <option value="ruby">Ruby</option>
-            <option value="php">PHP</option>
-            <option value="swift">Swift</option>
-            <option value="kotlin">Kotlin</option>
-            <option value="scala">Scala</option>
-            <option value="dart">Dart</option>
-            <option value="elixir">Elixir</option>
-            <option value="lua">Lua</option>
-            <option value="r">R</option>
-            <option value="perl">Perl</option>
-          </select>
+        <div className="bg-white dark:bg-[#2D2D2D] rounded-lg shadow-sm border border-gray-200 dark:border-[#3D3D3D] p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Language
+              </label>
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="w-full px-3 py-2 bg-white dark:bg-[#1F1F1F] border border-gray-300 dark:border-[#3D3D3D] rounded-md text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0078D4]"
+              >
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+                <option value="typescript">TypeScript</option>
+                <option value="java">Java</option>
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+                <option value="csharp">C#</option>
+                <option value="go">Go</option>
+                <option value="rust">Rust</option>
+                <option value="ruby">Ruby</option>
+                <option value="php">PHP</option>
+                <option value="swift">Swift</option>
+                <option value="kotlin">Kotlin</option>
+                <option value="scala">Scala</option>
+                <option value="dart">Dart</option>
+                <option value="elixir">Elixir</option>
+                <option value="lua">Lua</option>
+                <option value="r">R</option>
+                <option value="perl">Perl</option>
+              </select>
+            </div>
 
-          <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
-            Code
-          </label>
-          <textarea
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            required
-            rows={10}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 rounded-md mb-4 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Paste your code here..."
-          />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Code
+              </label>
+              <textarea
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                required
+                rows={12}
+                className="w-full px-3 py-2 bg-white dark:bg-[#1F1F1F] border border-gray-300 dark:border-[#3D3D3D] rounded-md font-mono text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0078D4] resize-y"
+                placeholder="Paste your code here..."
+              />
+            </div>
 
-          {error && (
-            <p className="text-red-500 dark:text-red-400 text-sm mb-4">
-              {error}
-            </p>
-          )}
+            {error && <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading || limitReached}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
-          >
-            {loading
-              ? "Reviewing..."
-              : limitReached
-              ? "Limit reached"
-              : "Submit for Review"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={loading || limitReached}
+              className="w-full bg-[#0078D4] hover:bg-[#106EBE] text-white py-2 rounded-md font-medium transition disabled:opacity-50"
+            >
+              {loading
+                ? "Reviewing..."
+                : limitReached
+                ? "Limit reached"
+                : "Submit for Review"}
+            </button>
+          </form>
+        </div>
 
         {result && (
-          <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md transition-colors">
-            <h2 className="font-semibold text-gray-800 dark:text-slate-100 mb-2">
+          <div className="mt-6 bg-white dark:bg-[#2D2D2D] rounded-lg shadow-sm border border-gray-200 dark:border-[#3D3D3D] p-6">
+            <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">
               Review Result
             </h2>
-            <p className="text-gray-700 dark:text-slate-300 whitespace-pre-wrap mb-2">
-              {result.review_result}
-            </p>
-            <p className="text-xs text-gray-400 dark:text-slate-500">
+            <div className="prose dark:prose-invert max-w-none">
+              <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap font-mono text-sm">
+                {result.review_result}
+              </p>
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               Model: CodeZaro AI
             </p>
           </div>

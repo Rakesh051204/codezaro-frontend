@@ -180,28 +180,28 @@ function Agent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-[#e6edf3] p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#1F1F1F] p-6 transition-colors">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-2">
             <Logo className="w-7 h-7" />
-            <h1 className="text-2xl font-bold font-display">CodeZaro Agent</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Agent</h1>
           </div>
           <button
             onClick={() => navigate("/review")}
-            className="text-sm text-[#58a6ff] hover:underline"
+            className="text-sm text-[#0078D4] hover:underline"
           >
             ← Back to Review
           </button>
         </div>
 
         {/* Session selector */}
-        <div className="bg-[#161b22] border border-[#30363d] rounded-lg p-4 mb-4">
+        <div className="bg-white dark:bg-[#2D2D2D] rounded-lg shadow-sm border border-gray-200 dark:border-[#3D3D3D] p-4 mb-4">
           <div className="flex items-center gap-4 flex-wrap">
             <select
               value={selectedSessionId}
               onChange={(e) => setSelectedSessionId(Number(e.target.value))}
-              className="bg-[#0d1117] border border-[#30363d] text-[#e6edf3] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#58a6ff]"
+              className="bg-white dark:bg-[#1F1F1F] border border-gray-300 dark:border-[#3D3D3D] rounded-md px-3 py-2 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#0078D4]"
             >
               <option value="">Select a session</option>
               {sessions.map((s) => (
@@ -212,14 +212,14 @@ function Agent() {
             </select>
             <button
               onClick={() => setShowCreateForm(!showCreateForm)}
-              className="text-[#58a6ff] hover:underline text-sm"
+              className="text-[#0078D4] hover:underline text-sm"
             >
               {showCreateForm ? "Cancel" : "+ New Session"}
             </button>
             <button
               onClick={handleRunAgent}
               disabled={loading || !selectedSessionId}
-              className="px-4 py-2 bg-[#238636] hover:bg-[#2ea043] rounded-md font-medium transition disabled:opacity-50"
+              className="px-4 py-2 bg-[#0078D4] hover:bg-[#106EBE] text-white rounded-md font-medium transition disabled:opacity-50"
             >
               {loading ? "Running..." : "Run Agent"}
             </button>
@@ -228,14 +228,14 @@ function Agent() {
 
         {/* Create session form */}
         {showCreateForm && (
-          <form onSubmit={handleCreateSession} className="bg-[#161b22] border border-[#30363d] rounded-lg p-4 mb-4">
+          <form onSubmit={handleCreateSession} className="bg-white dark:bg-[#2D2D2D] rounded-lg shadow-sm border border-gray-200 dark:border-[#3D3D3D] p-4 mb-4">
             <div className="mb-2">
               <input
                 type="text"
                 value={task}
                 onChange={(e) => setTask(e.target.value)}
                 placeholder="Describe the task..."
-                className="w-full px-3 py-2 bg-[#0d1117] border border-[#30363d] rounded-md text-[#e6edf3] placeholder-[#8b949e] focus:outline-none focus:ring-2 focus:ring-[#58a6ff]"
+                className="w-full px-3 py-2 bg-white dark:bg-[#1F1F1F] border border-gray-300 dark:border-[#3D3D3D] rounded-md text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0078D4]"
                 required
               />
             </div>
@@ -245,50 +245,50 @@ function Agent() {
                 value={repoUrl}
                 onChange={(e) => setRepoUrl(e.target.value)}
                 placeholder="GitHub repo URL (optional)"
-                className="w-full px-3 py-2 bg-[#0d1117] border border-[#30363d] rounded-md text-[#e6edf3] placeholder-[#8b949e] focus:outline-none focus:ring-2 focus:ring-[#58a6ff]"
+                className="w-full px-3 py-2 bg-white dark:bg-[#1F1F1F] border border-gray-300 dark:border-[#3D3D3D] rounded-md text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0078D4]"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-[#238636] hover:bg-[#2ea043] rounded-md font-medium transition disabled:opacity-50"
+              className="px-4 py-2 bg-[#0078D4] hover:bg-[#106EBE] text-white rounded-md font-medium transition disabled:opacity-50"
             >
               Create Session
             </button>
           </form>
         )}
 
-        {error && <p className="text-[#f85149] text-sm mb-3">{error}</p>}
+        {error && <p className="text-red-600 dark:text-red-400 text-sm mb-3">{error}</p>}
 
         {loading && (
-          <div className="text-[#8b949e] text-sm animate-pulse mb-3">Agent is thinking...</div>
+          <div className="text-gray-500 dark:text-gray-400 text-sm animate-pulse mb-3">Agent is thinking...</div>
         )}
 
         {/* Pending action approval card */}
         {pendingAction && (
-          <div className="mb-4 bg-[#161b22] border border-[#f0883e] rounded-lg p-4">
+          <div className="mb-4 bg-white dark:bg-[#2D2D2D] rounded-lg shadow-sm border border-yellow-300 dark:border-yellow-700 p-4">
             <div className="flex items-start gap-3">
-              <span className="text-[#f0883e] font-mono">⚠️</span>
+              <span className="text-yellow-600 dark:text-yellow-400 font-mono">⚠️</span>
               <div className="flex-1">
-                <p className="text-[#e6edf3] text-sm font-semibold">Proposed Action</p>
-                <p className="text-[#8b949e] text-sm">
-                  <span className="text-[#f0883e]">Tool:</span> {pendingAction.tool}
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">Proposed Action</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="font-medium">Tool:</span> {pendingAction.tool}
                 </p>
-                <p className="text-[#8b949e] text-sm">
-                  <span className="text-[#f0883e]">Params:</span> {JSON.stringify(pendingAction.params)}
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <span className="font-medium">Params:</span> {JSON.stringify(pendingAction.params)}
                 </p>
                 <div className="mt-3 flex gap-3">
                   <button
                     onClick={() => handleApprove(true)}
-                    className="px-4 py-2 bg-[#238636] hover:bg-[#2ea043] rounded-md text-sm font-medium transition"
+                    className="px-4 py-2 bg-[#0078D4] hover:bg-[#106EBE] text-white rounded-md text-sm font-medium transition"
                   >
-                    ✅ Accept
+                    Accept
                   </button>
                   <button
                     onClick={() => handleApprove(false)}
-                    className="px-4 py-2 bg-[#f85149] hover:bg-[#da3633] rounded-md text-sm font-medium transition"
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition"
                   >
-                    ❌ Reject
+                    Reject
                   </button>
                 </div>
               </div>
@@ -299,35 +299,35 @@ function Agent() {
         {/* Steps log */}
         {steps.length > 0 && (
           <div className="space-y-3 mb-6">
-            <h2 className="text-lg font-semibold text-[#e6edf3]">Agent Steps</h2>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Agent Steps</h2>
             {steps.map((step, idx) => (
-              <div key={idx} className="bg-[#161b22] border border-[#30363d] rounded-lg p-4">
+              <div key={idx} className="bg-white dark:bg-[#2D2D2D] rounded-lg shadow-sm border border-gray-200 dark:border-[#3D3D3D] p-4">
                 <div className="flex items-start gap-3">
-                  <span className="text-[#58a6ff] font-mono text-sm">#{idx + 1}</span>
+                  <span className="text-[#0078D4] font-mono text-sm">#{idx + 1}</span>
                   <div className="flex-1">
-                    <p className="text-[#8b949e] text-sm">
-                      <span className="text-[#e6edf3]">Thought:</span> {step.thought || "—"}
+                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                      <span className="font-medium text-gray-900 dark:text-white">Thought:</span> {step.thought || "—"}
                     </p>
                     {step.action && (
-                      <p className="text-[#f0883e] text-sm mt-1">
-                        <span className="text-[#e6edf3]">Action:</span> {step.action}
+                      <p className="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
+                        <span className="font-medium text-gray-900 dark:text-white">Action:</span> {step.action}
                         {step.action_input && (
-                          <span className="text-[#8b949e] ml-2">
+                          <span className="text-gray-500 dark:text-gray-400 ml-2">
                             {JSON.stringify(step.action_input)}
                           </span>
                         )}
                       </p>
                     )}
                     {step.result && (
-                      <p className="text-[#3fb950] text-sm mt-1">
-                        <span className="text-[#e6edf3]">Result:</span> {step.result}
+                      <p className="text-sm text-green-700 dark:text-green-400 mt-1">
+                        <span className="font-medium text-gray-900 dark:text-white">Result:</span> {step.result}
                       </p>
                     )}
                     {step.rejected && (
-                      <p className="text-[#f85149] text-sm mt-1">⛔ Action rejected by user</p>
+                      <p className="text-sm text-red-600 dark:text-red-400 mt-1">Action rejected by user</p>
                     )}
                     {step.stop && (
-                      <p className="text-[#3fb950] text-sm mt-1">✅ Task complete</p>
+                      <p className="text-sm text-green-700 dark:text-green-400 mt-1">✅ Task complete</p>
                     )}
                   </div>
                 </div>
@@ -338,37 +338,37 @@ function Agent() {
 
         {/* PR Creation UI */}
         {selectedSessionId && (
-          <div className="border-t border-[#30363d] pt-4 mt-4">
+          <div className="border-t border-gray-200 dark:border-[#3D3D3D] pt-4 mt-4">
             <div className="flex flex-wrap gap-3 items-end">
               <input
                 type="text"
                 placeholder="PR title"
                 value={prTitle}
                 onChange={(e) => setPrTitle(e.target.value)}
-                className="flex-1 min-w-[150px] px-3 py-2 bg-[#0d1117] border border-[#30363d] rounded-md text-[#e6edf3] placeholder-[#8b949e] focus:outline-none focus:ring-2 focus:ring-[#58a6ff]"
+                className="flex-1 min-w-[150px] px-3 py-2 bg-white dark:bg-[#1F1F1F] border border-gray-300 dark:border-[#3D3D3D] rounded-md text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0078D4]"
               />
               <input
                 type="text"
                 placeholder="PR body"
                 value={prBody}
                 onChange={(e) => setPrBody(e.target.value)}
-                className="flex-1 min-w-[150px] px-3 py-2 bg-[#0d1117] border border-[#30363d] rounded-md text-[#e6edf3] placeholder-[#8b949e] focus:outline-none focus:ring-2 focus:ring-[#58a6ff]"
+                className="flex-1 min-w-[150px] px-3 py-2 bg-white dark:bg-[#1F1F1F] border border-gray-300 dark:border-[#3D3D3D] rounded-md text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#0078D4]"
               />
               <button
                 onClick={handleCreatePR}
                 disabled={prStatus === "loading"}
-                className="px-4 py-2 bg-[#1f6feb] hover:bg-[#388bfd] rounded-md font-medium transition disabled:opacity-50"
+                className="px-4 py-2 bg-[#0078D4] hover:bg-[#106EBE] text-white rounded-md font-medium transition disabled:opacity-50"
               >
                 {prStatus === "loading" ? "Creating..." : "Create PR"}
               </button>
             </div>
             {prStatus === "success" && prUrl && (
-              <p className="text-[#3fb950] text-sm mt-2">
-                ✅ PR created: <a href={prUrl} target="_blank" rel="noopener noreferrer" className="text-[#58a6ff] hover:underline">{prUrl}</a>
+              <p className="text-green-700 dark:text-green-400 text-sm mt-2">
+                ✅ PR created: <a href={prUrl} target="_blank" rel="noopener noreferrer" className="text-[#0078D4] hover:underline">{prUrl}</a>
               </p>
             )}
             {prStatus === "error" && (
-              <p className="text-[#f85149] text-sm mt-2">❌ Failed to create PR. Check logs.</p>
+              <p className="text-red-600 dark:text-red-400 text-sm mt-2">❌ Failed to create PR. Check logs.</p>
             )}
           </div>
         )}
