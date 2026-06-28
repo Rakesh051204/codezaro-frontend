@@ -6,6 +6,7 @@ import Review from "./pages/Review";
 import History from "./pages/History";
 import Landing from "./pages/Landing";
 import Agent from "./pages/Agent";
+import Sidebar from "./components/Sidebar";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("access_token");
@@ -24,7 +25,12 @@ function App() {
             path="/review"
             element={
               <PrivateRoute>
-                <Review />
+                <div className="flex min-h-screen">
+                  <Sidebar />
+                  <div className="ml-56 flex-1 p-6">
+                    <Review />
+                  </div>
+                </div>
               </PrivateRoute>
             }
           />
@@ -32,7 +38,12 @@ function App() {
             path="/history"
             element={
               <PrivateRoute>
-                <History />
+                <div className="flex min-h-screen">
+                  <Sidebar />
+                  <div className="ml-56 flex-1 p-6">
+                    <History />
+                  </div>
+                </div>
               </PrivateRoute>
             }
           />
@@ -40,7 +51,12 @@ function App() {
             path="/agent"
             element={
               <PrivateRoute>
-                <Agent />
+                <div className="flex min-h-screen">
+                  <Sidebar />
+                  <div className="ml-56 flex-1 p-6">
+                    <Agent />
+                  </div>
+                </div>
               </PrivateRoute>
             }
           />
